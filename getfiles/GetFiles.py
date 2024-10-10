@@ -104,9 +104,7 @@ def get_files_iterator(
 
                     )
     except FileNotFoundError:
-        print(f"Directory {path} does not exist.")
-    except PermissionError:
-        print(f"Permission denied for directory {path}.")
+        raise FileNotFoundError(f"Directory {path} does not exist.")
 
 
 def get_folder_and_file_count(path: str) -> tuple[int, int]:
