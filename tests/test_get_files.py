@@ -138,7 +138,7 @@ class TestGetFiles(unittest.TestCase):
             time_type="created",
             as_date_time=True,
             str_format="%Y-%m-%d",
-            size=False,
+            get_size=False,
         )
 
         expected = [
@@ -194,7 +194,7 @@ class TestGetFiles(unittest.TestCase):
             time_type="modified",
             as_date_time=False,
             str_format="%Y-%m-%d %H:%M:%S",
-            size=True,
+            get_size=True,
         )
 
         expected = [
@@ -315,7 +315,7 @@ class TestGetFiles(unittest.TestCase):
             time_type="modified",
             as_date_time=False,
             str_format="%Y-%m-%d %H:%M:%S",
-            size=True,
+            get_size=True,
         )
 
         expected = [
@@ -369,7 +369,7 @@ class TestGetFiles(unittest.TestCase):
             time_type="modified",
             as_date_time=False,
             str_format="%Y-%m-%d %H:%M:%S",
-            size=True,
+            get_size=True,
         )
 
         expected = [
@@ -402,7 +402,7 @@ class TestGetFiles(unittest.TestCase):
             time_type="modified",
             as_date_time=False,
             str_format="%Y-%m-%d %H:%M:%S",
-            size=True,
+            get_size=True,
         )
 
         expected = [
@@ -428,7 +428,7 @@ class TestGetFiles(unittest.TestCase):
                 time_type="modified",
                 as_date_time=False,
                 str_format="%Y-%m-%d %H:%M:%S",
-                size=True
+                get_size=True
             ))
 
     def test_get_folder_and_file_count(self):

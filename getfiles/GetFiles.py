@@ -12,7 +12,7 @@ def get_files(
     time_type: Literal["created", "modified", None] = "modified",
     as_date_time: bool = False,
     str_format: str = "%Y-%m-%d %H:%M:%S",
-    size: bool = False
+    get_size: bool = False
 ) -> list[dict] | list[str]:
     """
     Returns a list of files in the given path with optional additional
@@ -33,7 +33,7 @@ def get_files(
             according to `str_format`. Defaults to False.
         str_format (str, optional): The format to use for the date time string
             if `as_date_time` is False. Defaults to "%Y-%m-%d %H:%M:%S".
-        size (bool, optional): Whether to return the size of the files.
+        get_size (bool, optional): Whether to return the size of the files.
             Defaults to False.
 
     Returns:
@@ -55,7 +55,7 @@ def get_files(
     return list(
         get_files_iterator(
             path, extensions, subfolders, time_type, as_date_time, str_format,
-            size
+            get_size
         )
     )
 
@@ -67,7 +67,7 @@ def get_files_iterator(
     time_type: Literal["created", "modified", None],
     as_date_time: bool,
     str_format: str,
-    size: bool
+    get_size: bool
 ) -> Generator[Path | dict]:
     """
     Returns a generator that yields files in the given path.
@@ -81,7 +81,7 @@ def get_files_iterator(
         as_date_time (bool, optional): Whether to return the time as a datetime
             object.
         str_format (str, optional): The format to use for the date time string.
-        size (bool, optional): Whether to return the size of the files.
+        get_size (bool, optional): Whether to return the size of the files.
 
     Yields:
         Generator[str | dict[str]]: A generator that yields files in the given
@@ -94,13 +94,13 @@ def get_files_iterator(
                 if file.is_dir(follow_symlinks=False) and subfolders:
                     yield from get_files_iterator(
                         Path(file), extensions, subfolders, time_type,
-                        as_date_time, str_format, size
+                        as_date_time, str_format, get_size
                     )
                 elif extensions is None or \
                         file.name.lower().endswith(tuple(extensions)):
                     yield process_file(
                         Path(file), time_type, as_date_time, str_format,
-                        size
+                        get_size
 
                     )
     except FileNotFoundError:
@@ -167,7 +167,7 @@ def process_file(
     time_type: Literal["created", "modified", None],
     as_date_time: bool,
     str_format: str,
-    size: bool
+    get_size: bool
 ) -> Path | dict:
     """Processes a file and returns its information.
 
@@ -180,14 +180,14 @@ def process_file(
             `str_format`.
         str_format (str, optional): The format to use for the date time string
             if `as_date_time` is False.
-        size (bool): If True, includes the size of the file in the returned
+        get_size (bool): If True, includes the size of the file in the returned
             information.
 
     Returns:
         Path | dict: A dictionary containing the information of the file. The
             dictionary includes the path of the file, the specified time (either
             'modified' or 'created'), and optionally the size of the file. If no
-            additional information is requested (`as_date_time` and `size`
+            additional information is requested (`as_date_time` and `get_size`
             are both False), the function returns the path.
     """
     info = {"path": path}
@@ -206,7 +206,7 @@ def process_file(
         else:
             info["datetime"] = file_time.strftime(str_format)
 
-    if size:
+    if get_size:
         info["size"] = path.stat(follow_symlinks=False).st_size
 
     return info if len(info.keys()) > 1 else path
