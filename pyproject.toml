@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "getfiles"
+version = "0.0.1"
+dependencies = []
+requires-python = ">=3.10"
+authors = [
+    { name = "Toan Nguyen", email = "toann1980@gmail.com" },
+]
+description = "Get files from a directory"
+readme = "README.md"
+license = {text = "MIT License"}
+keywords = ["logging", "handler", "logger"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Repository = "https://github.com/toann1980/GetFiles.git"
+"Bug Tracker" = "https://github.com/toann1980/GetFiles/issues"
