@@ -2,7 +2,7 @@ from collections.abc import Generator
 from datetime import datetime as dt
 import os
 from pathlib import Path
-from typing import Literal
+from typing import List, Literal, Union
 
 
 def get_files(
@@ -160,6 +160,35 @@ def get_folder_size(path: str) -> int:
     scan_directory(path)
 
     return total_size
+
+
+def get_folders(path: Union[str, Path]) -> List[Path]:
+    """
+    Returns a list of folders in the given path.
+
+    Args:
+        path (str): The path to search for folders.
+
+    Returns:
+        list[str]: A list of folders in the given path.
+    """
+    path = Path(path)
+    if not path.is_dir():
+        raise NotADirectoryError(f"{path} is not a directory.")
+
+    folders = []
+
+    def scan_directory(path: Path) -> None:
+        nonlocal folders
+        with os.scandir(path) as iterator:
+            for entry in iterator:
+                if entry.is_dir(follow_symlinks=False):
+                    folders.append(Path(entry.path))
+                    scan_directory(entry.path)
+
+    scan_directory(path)
+
+    return folders
 
 
 def process_file(

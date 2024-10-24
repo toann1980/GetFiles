@@ -11,6 +11,7 @@ from getfiles.GetFiles import (
     get_folder_and_file_count,
     process_file,
     get_folder_size,
+    get_folders
 )
 
 
@@ -477,3 +478,16 @@ class TestGetFiles(unittest.TestCase):
              "nested_sub_dir" / "file14.css").stat().st_size
         ])
         self.assertEqual(folder_size, expected_size)
+
+    def test_get_folders(self):
+        folders = get_folders(self.temp_directory_structure)
+        expected_folders = [
+            self.temp_directory_structure / "sub_dir",
+            self.temp_directory_structure / "another_sub_dir",
+            self.temp_directory_structure / "another_sub_dir" / "nested_sub_dir"
+        ]
+        self.assertCountEqual(folders, expected_folders)
+
+    def test_get_folders_file_path(self) -> None:
+        with self.assertRaises(NotADirectoryError):
+            get_folders(self.temp_directory_structure / "file1.txt")
